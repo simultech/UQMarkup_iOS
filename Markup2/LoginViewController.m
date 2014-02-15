@@ -16,6 +16,8 @@
 @interface LoginViewController () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *username;
 @property (weak, nonatomic) IBOutlet UITextField *password;
+@property (weak, nonatomic) IBOutlet UIPickerView *institution;
+
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 @property (weak, nonatomic) IBOutlet UIView *errorView;
 
@@ -44,6 +46,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[MarkupAPIController sharedApi] getMarkupLocationsWithSuccess:^(NSArray *locations) {
+        NSLog(@"STUFF");
+        self.institutions = locations;
+        [self.institution reloadAllComponents];
+    } andFailure:^(NSError *error) {
+        NSLog(@"ERROR");
+    }];
+    //self.institutions = @[@"University of Queensland",@"Auckland University",@"University of News South Wales",@"University of News South Wales",@"University of News South Wales",@"University of News South Wales"];
 	// Do any additional setup after loading the view.
 }
 
@@ -120,5 +130,38 @@
     
     return NO;
 }
+
+#pragma mark UIPickerViewDataSource methods
+
+// returns the number of 'columns' to display.
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1.0;
+}
+
+// returns the # of rows in each component..
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return [self.institutions count];
+}
+
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
+    UILabel* tView = (UILabel*)view;
+    if (!tView){
+        tView = [[UILabel alloc] init];
+    }
+    NSDictionary *institution = [self.institutions objectAtIndex:row];
+    if(institution) {
+        [tView setText:[institution objectForKey:@"name"]];
+    }
+    return tView;
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    NSDictionary *institution = [self.institutions objectAtIndex:row];
+    if(institution) {
+        [MarkupAPIController setBaseURL:[institution objectForKey:@"url"]];
+    }
+    NSLog(@"TEST");
+}
+
 
 @end

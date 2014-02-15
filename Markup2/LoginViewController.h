@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @protocol LoginDelegate;
-@interface LoginViewController : UIViewController <UITextFieldDelegate>
+@interface LoginViewController : UIViewController <UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 @property (nonatomic, weak) id<LoginDelegate> delegate;
+@property (strong) NSArray *institutions;
 
 @end
 

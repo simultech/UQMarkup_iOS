@@ -168,7 +168,10 @@
         CGContextSetRenderingIntent(context, kCGRenderingIntentDefault);
         /* END SPEED */
         if(!self.dontRender) {
-            CGContextDrawPDFPage(context, pdfPage);
+            CGPDFPageRef pageRef = pdfPage;
+            CGPDFPageRetain(pageRef);
+            CGContextDrawPDFPage(context, pageRef);
+            CGPDFPageRelease(pageRef);
         }
         CGContextRestoreGState(context);
         

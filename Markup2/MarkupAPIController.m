@@ -29,13 +29,25 @@
 @implementation MarkupAPIController
 @synthesize client;
 
+static NSString *baseURL;
+static BOOL loaded = NO;
+
+static MarkupAPIController *instance;
+
 + (MarkupAPIController *)sharedApi
 {
-    static MarkupAPIController *instance;
-    
+    if (!loaded) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if([defaults objectForKey:@"basepath"]) {
+            baseURL = [defaults objectForKey:@"basepath"];
+        } else {
+            baseURL = kApiBase;
+        }
+        loaded = YES;
+    }
     if (!instance) {
         instance = [[MarkupAPIController alloc] init];
-        instance.client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kApiBase]];
+        instance.client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:baseURL]];
         [instance.client registerHTTPOperationClass:[AFJSONRequestOperation class]];
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -48,6 +60,33 @@
     return instance;
 }
 
++ (void)setBaseURL:(NSString *)base {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setValue:base forKey:@"basepath"];
+    baseURL = base;
+    instance = nil;
+    [MarkupAPIController sharedApi];
+}
+
+- (void)getMarkupLocationsWithSuccess:(void(^)(NSArray *locations))success
+               andFailure:(void(^)(NSError *error))failure
+{
+    
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://uqmarkup.ceit.uq.edu.au/locations.json"]];
+    
+    AFJSONRequestOperation *jsonOp = [[AFJSONRequestOperation alloc] initWithRequest:request];
+    
+    [jsonOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success([responseObject objectForKey:@"locations"]);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        failure(error);
+    }];
+    
+    [jsonOp start];
+    
+}
+
 - (void)loginWithUsername:(NSString *)username
               andPassword:(NSString *)password
                withSucess:(void(^)())success
@@ -55,7 +94,7 @@
 {
     NSDictionary *params = [self addAuthToParams:@{ @"username": username, @"password": password }];
     
-    NSURLRequest *request = [self.client requestWithMethod:@"POST" path:@"/_dev/api/login" parameters:params];
+    NSURLRequest *request = [self.client requestWithMethod:@"POST" path:@"api/login" parameters:params];
     AFJSONRequestOperation *jsonOp = [[AFJSONRequestOperation alloc] initWithRequest:request];
     [jsonOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -76,7 +115,7 @@
                andFailure:(void(^)(NSError *error))failure
 {
     NSDictionary *params = [self addAuthToParams:[NSDictionary dictionary]];
-    NSURLRequest *request = [self.client requestWithMethod:@"POST" path:@"/_dev/api/setAgreedToTOS" parameters:params];
+    NSURLRequest *request = [self.client requestWithMethod:@"POST" path:@"api/setAgreedToTOS" parameters:params];
     AFJSONRequestOperation *jsonOp = [[AFJSONRequestOperation alloc] initWithRequest:request];
     [jsonOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         success();
@@ -92,7 +131,7 @@
     NSString *appVersion = [bundle objectForInfoDictionaryKey:(NSString *)@"CFBundleShortVersionString"];
     NSString *appBuildNumber = [bundle objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
     NSDictionary *params = [self addAuthToParams:@{ @"version": appVersion, @"build": appBuildNumber }];
-    NSURLRequest *request = [self.client requestWithMethod:@"POST" path:@"/_dev/api/isLatestVersion" parameters:params];
+    NSURLRequest *request = [self.client requestWithMethod:@"POST" path:@"api/isLatestVersion" parameters:params];
     AFJSONRequestOperation *jsonOp = [[AFJSONRequestOperation alloc] initWithRequest:request];
     [jsonOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         success([responseObject objectForKey:@"response"]);
@@ -106,7 +145,7 @@
                     andFailure:(void(^)(NSError *error))failure
 {
     NSDictionary *params = [self addAuthToParams:[NSDictionary dictionary]];
-    NSURLRequest *request = [self.client requestWithMethod:@"POST" path:@"/_dev/api/hasAgreedToTOS" parameters:params];
+    NSURLRequest *request = [self.client requestWithMethod:@"POST" path:@"api/hasAgreedToTOS" parameters:params];
     AFJSONRequestOperation *jsonOp = [[AFJSONRequestOperation alloc] initWithRequest:request];
     [jsonOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         success([responseObject objectForKey:@"response"]);
@@ -120,7 +159,7 @@
               andFailure:(void(^)(NSError *error))failure
 {
     NSDictionary *params = [self addAuthToParams:[NSDictionary dictionary]];
-    NSURLRequest *request = [self.client requestWithMethod:@"GET" path:@"/_dev/api/logout" parameters:params];
+    NSURLRequest *request = [self.client requestWithMethod:@"GET" path:@"api/logout" parameters:params];
     
     AFJSONRequestOperation *jsonOp = [[AFJSONRequestOperation alloc] initWithRequest:request];
     [jsonOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -129,6 +168,9 @@
         [defaults removeObjectForKey:@"password"];
         success();
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults removeObjectForKey:@"username"];
+        [defaults removeObjectForKey:@"password"];
         DLog(@"Failed due to: %d: %@", operation.response.statusCode, operation.responseString);
         failure(error);
     }];
@@ -140,7 +182,7 @@
                        andFailure:(void(^)(NSError *error))failure
 {
     NSDictionary *params = [self addAuthToParams:[NSDictionary dictionary]];
-    NSURLRequest *request = [self.client requestWithMethod:@"GET" path:@"/_dev/api/userdetails" parameters:params];
+    NSURLRequest *request = [self.client requestWithMethod:@"GET" path:@"api/userdetails" parameters:params];
     AFJSONRequestOperation *jsonOp = [[AFJSONRequestOperation alloc] initWithRequest:request];
     [jsonOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -156,7 +198,7 @@
 {
     NSDictionary *params = [self addAuthToParams:[NSDictionary dictionary]];
     
-    NSURLRequest *request = [self.client requestWithMethod:@"GET" path:@"/_dev/api/projectlist" parameters:params];
+    NSURLRequest *request = [self.client requestWithMethod:@"GET" path:@"api/projectlist" parameters:params];
     AFJSONRequestOperation *jsonOp = [[AFJSONRequestOperation alloc] initWithRequest:request];
     [jsonOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSMutableArray *projects = [[NSMutableArray alloc] init];
@@ -183,7 +225,7 @@
                          andProgress:(void (^)(float percentComplete))progress
 {
     NSDictionary *params = [self addAuthToParams:[NSDictionary dictionary]];
-    NSString *requestPath = [NSString stringWithFormat:@"/_dev/api/submissionFile/%d", submissionId];
+    NSString *requestPath = [NSString stringWithFormat:@"api/submissionFile/%d", submissionId];
     NSURLRequest *request = [self.client requestWithMethod:@"GET" path:requestPath parameters:params];
     AFHTTPRequestOperation *requestOp = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     
@@ -232,7 +274,7 @@
                        progress:(void (^)(int64_t bytesWritten, int64_t totalBytesWritten, int64_t bytesExpectedToWrite))progress
 {
     NSDictionary *params = [self addAuthToParams:@{}];
-    NSString *requestPath = [NSString stringWithFormat:@"/_dev/api/uploadSubmission/%d/", submissionId];
+    NSString *requestPath = [NSString stringWithFormat:@"api/uploadSubmission/%d/", submissionId];
     NSData *zipFileData = [NSData dataWithContentsOfFile:zipFilePath];
     NSURLRequest *request = [self.client multipartFormRequestWithMethod:@"POST" path:requestPath parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         

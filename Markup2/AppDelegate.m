@@ -26,7 +26,7 @@
                                                object:nil];
     
     [self.reach startNotifier];
-    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     return YES;
 }
 

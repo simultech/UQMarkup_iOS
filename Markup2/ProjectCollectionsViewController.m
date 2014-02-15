@@ -70,6 +70,7 @@
     
     [self.editButtonItem setTitle:@"Publish"];
     [self.editButtonItem setAction:@selector(togglePublishMode:)];
+    [self.editButtonItem setTintColor:[UIColor whiteColor]];
     [self.navigationItem setRightBarButtonItem:self.editButtonItem];
     self.cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(togglePublishMode:)];
     self.reloadButton = self.navigationItem.leftBarButtonItem;
@@ -341,6 +342,13 @@
 
 - (IBAction)togglePublishMode:(id)sender
 {
+    if (_inPublishMode) {
+        [self.navigationController.navigationBar setTranslucent:YES];
+        [self.navigationController.toolbar setTranslucent:YES];
+    } else {
+        [self.navigationController.navigationBar setTranslucent:NO];
+        [self.navigationController.toolbar setTranslucent:NO];
+    }
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.2];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -349,12 +357,15 @@
         [self.navigationItem setLeftBarButtonItem:self.reloadButton animated:YES];
         [self.editButtonItem setAction:@selector(togglePublishMode:)];
         [self.navigationItem setRightBarButtonItem:self.editButtonItem];
-        [self.navigationController.toolbar setTintColor:[UIColor darkGrayColor]];
         [self.editButtonItem setTitle:@"Publish"];
-        [self.editButtonItem setTintColor:[UIColor darkGrayColor]];
         [self.publishTitleView setAlpha:0.0];
         [self.regularTitleView setAlpha:1.0];
-        [self.navigationController.navigationBar setTintColor:[UIColor darkGrayColor]];
+        
+        [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithHue:0.729 saturation:0.550 brightness:0.663 alpha:1]];
+        [self.navigationController.toolbar setBarTintColor:[UIColor colorWithHue:0.729 saturation:0.550 brightness:0.663 alpha:1]];
+        [self.navigationController.toolbar setTintColor:[UIColor whiteColor]];
+        [self.editButtonItem setTintColor:[UIColor whiteColor]];
+        
         for(int i=0; i<[self.filteredProjects count]; i++) {
             for(int j=0; j<[[[self.filteredProjects objectAtIndex:i] submissions] count]; j++) {
                 [self.collectionView deselectItemAtIndexPath:[NSIndexPath indexPathForItem:j inSection:i] animated:NO];
@@ -365,12 +376,16 @@
         [self.navigationItem setRightBarButtonItem:self.editButtonItem];
         [self.navigationItem setLeftBarButtonItem:self.cancelButton animated:YES];
         [self.editButtonItem setTitle:@"Upload"];
-        [self.editButtonItem setTintColor:UIColorFromRGB(0x838cfd)];
         [self.navigationItem setTitle:@"Select Submissions to Publish"];
         [self.publishTitleView setAlpha:1.0];
         [self.regularTitleView setAlpha:0.0];
-        [self.navigationController.navigationBar setTintColor:UIColorFromRGB(0xca9214)];
-        [self.navigationController.toolbar setTintColor:UIColorFromRGB(0xca9214)];
+        
+        
+        [self.navigationController.navigationBar setBarTintColor:UIColorFromRGB(0xE29C40)];
+        [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+        [self.navigationController.toolbar setBarTintColor:UIColorFromRGB(0xE29C40)];
+        
+        
         [self updatePublishButtonText];
     }
     
@@ -507,10 +522,10 @@
 
 - (void) updatePublishButtonText {
     if([[self.collectionView indexPathsForSelectedItems] count] == 0) {
-        [self.editButtonItem setTintColor:UIColorFromRGB(0x999999)];
+        [self.editButtonItem setTintColor:UIColorFromRGB(0x915626)];
         [self.editButtonItem setEnabled:NO];
     } else {
-        [self.editButtonItem setTintColor:UIColorFromRGB(0x838cfd)];
+        [self.editButtonItem setTintColor:UIColorFromRGB(0x0000FF)];
         [self.editButtonItem setEnabled:YES];
     }
     [self.editButtonItem setTitle:[NSString stringWithFormat:@"Upload (%d)",[[self.collectionView indexPathsForSelectedItems] count]]];

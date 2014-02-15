@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define kApiBase @"https://uqmarkup.ceit.uq.edu.au/"
+#define kApiBase @"https://uqmarkup.ceit.uq.edu.au/_dev/"
 #define kApiSharedSecret @"715403e5d23e8bd08ab6506ce9c6941703d5fcaa77c6bd0d378e758d324f5a10"
 
 @interface MarkupAPIController : NSObject
@@ -16,6 +16,12 @@
 + (MarkupAPIController *)sharedApi;
 
 // Auth
+
++ (void)setBaseURL:(NSString *)base;
+
+- (void)getMarkupLocationsWithSuccess:(void(^)(NSArray *locations))success
+                           andFailure:(void(^)(NSError *error))failure;
+
 - (void)loginWithUsername:(NSString *)username
               andPassword:(NSString *)password
                withSucess:(void(^)())success

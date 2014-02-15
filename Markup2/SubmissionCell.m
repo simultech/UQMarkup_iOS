@@ -39,10 +39,10 @@
     [self.highlightView setBackgroundColor:[UIColor redColor]];
     [self.selectedBackgroundView addSubview:self.highlightView];
     
-    self.highlightView.layer.borderColor = [[UIColor yellowColor] CGColor];
+    self.highlightView.layer.borderColor = [[UIColor darkGrayColor] CGColor];
     self.highlightView.layer.borderWidth = 3.0;
     self.highlightView.layer.cornerRadius = 14.0;
-    [self.highlightView setBackgroundColor:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.6]];
+    [self.highlightView setBackgroundColor:[UIColor colorWithRGBHex:0xBBBDC0]];
     [self.highlightView setAlpha:0.8];
 }
 
