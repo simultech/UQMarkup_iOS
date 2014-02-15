@@ -164,6 +164,10 @@
 
 - (void)dealloc
 {
+    for(TiledPDFView *page in self.pages) {
+        page.dontRender = YES;
+    }
+    NSLog(@"DEALLOCING PDF");
 	// Clean up
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"currentResponder" object:nil];
     currentResponder = nil;

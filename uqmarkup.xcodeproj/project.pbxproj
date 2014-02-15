@@ -356,7 +356,6 @@
 		A9CC435C17E2CBD8005E3945 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		A9CC435E17E2CBFB005E3945 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
 		A9CC436017E2CC21005E3945 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
-		A9CC436217E2CC2A005E3945 /* landscape_launch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "landscape_launch@2x.png"; path = "../../../../Desktop/landscape_launch@2x.png"; sourceTree = "<group>"; };
 		A9CC436417E2D32D005E3945 /* icon-152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-152.png"; sourceTree = "<group>"; };
 		A9CC436817E2D75F005E3945 /* icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-76.png"; sourceTree = "<group>"; };
 		A9D8B9AD15EB463B002660BE /* PalmProtectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PalmProtectViewController.h; sourceTree = "<group>"; };
@@ -855,7 +854,6 @@
 		D0938E3315D259C4001980B4 = {
 			isa = PBXGroup;
 			children = (
-				A9CC436217E2CC2A005E3945 /* landscape_launch@2x.png */,
 				A9CC436017E2CC21005E3945 /* Default-Landscape@2x~ipad.png */,
 				A9CC435E17E2CBFB005E3945 /* Default-Portrait@2x~ipad.png */,
 				A9CC435C17E2CBD8005E3945 /* Default-Landscape~ipad.png */,
@@ -1339,6 +1337,11 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Ably Design";
+				TargetAttributes = {
+					D0938E3D15D259C4001980B4 = {
+						DevelopmentTeam = X4J3AMW696;
+					};
+				};
 			};
 			buildConfigurationList = D0938E3815D259C4001980B4 /* Build configuration list for PBXProject "uqmarkup" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1733,7 +1736,8 @@
 		D0938E6C15D259C4001980B4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Markup2/uqmarkup-Prefix.pch";
 				INFOPLIST_FILE = "Markup2/uqmarkup-Info.plist";
@@ -1753,7 +1757,8 @@
 		D0938E6D15D259C4001980B4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Markup2/uqmarkup-Prefix.pch";
 				INFOPLIST_FILE = "Markup2/uqmarkup-Info.plist";

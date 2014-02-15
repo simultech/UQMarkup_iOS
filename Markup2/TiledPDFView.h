@@ -56,6 +56,7 @@
 @property (nonatomic, assign) CGFloat pageScale;
 @property (nonatomic, strong) UIImageView *cachedPage;
 @property (nonatomic, weak) AnnotationCanvasView *annotationCanvas;
+@property (assign) BOOL dontRender;
 
 - (id)initWithFrame:(CGRect)frame andScale:(CGFloat)scale;
 - (void)resetWithFrame:(CGRect)frame andScale:(CGFloat)scale;

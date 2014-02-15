@@ -21,7 +21,7 @@
 @property (nonatomic,strong) ToolbarButton *audioButton;
 @property (nonatomic,strong) UIBarButtonItem *revertButton;
 @property (nonatomic, strong) UIBarButtonItem *doneButton;
-@property (nonatomic, weak) IBOutlet id<MainToolbarDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<MainToolbarDelegate,UIToolbarDelegate> delegate;
 @property (nonatomic, strong) UIPopoverController *palmPopover;
 @property (nonatomic, assign) BOOL hideEraser;
 - (void)deselectButtons;
@@ -35,7 +35,6 @@
 - (void)resetAudioButton;
 @end
 
-
 @protocol MainToolbarDelegate
 
 - (void)mainToolbar:(MainToolbar *)toolbar didSelectAnnotationType:(AnnotationType)annotationType;
@@ -47,3 +46,6 @@
 - (void)mainToolbarDidCloseDocument;
 
 @end
+
+
+

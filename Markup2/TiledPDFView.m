@@ -148,7 +148,7 @@
 // Draw the CGPDFPageRef into the layer at the correct scale.
 -(void)drawLayer:(CALayer*)layer inContext:(CGContextRef)context
 {
-    if (isShown) {
+    if (isShown && !self.dontRender) {
         // First fill the background with white.
         CGContextSetRGBFillColor(context, 1.0,1.0,1.0,1.0);
         CGContextFillRect(context,self.bounds);
@@ -167,8 +167,9 @@
         CGContextSetInterpolationQuality(context, kCGInterpolationHigh); 
         CGContextSetRenderingIntent(context, kCGRenderingIntentDefault);
         /* END SPEED */
-        
-        CGContextDrawPDFPage(context, pdfPage);
+        if(!self.dontRender) {
+            CGContextDrawPDFPage(context, pdfPage);
+        }
         CGContextRestoreGState(context);
         
         if (!cachedPage) {
