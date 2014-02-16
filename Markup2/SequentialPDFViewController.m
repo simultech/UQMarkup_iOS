@@ -258,7 +258,7 @@
     [rubricContent setToolbarRef:self.rubricDrawer];
     [self.rubricDrawer setContentWidth:650.0];
     [self.rubricDrawer setupTabImage:@"tab_rubrics.png" atVerticalPosition:0.1];
-    [self.rubricDrawer.view setAlpha:0.90];
+    //[self.rubricDrawer.view setAlpha:0.90];
     [self.view addSubview:self.rubricDrawer.view];
     [self addChildViewController:self.rubricDrawer];
     [self.rubricDrawer didMoveToParentViewController:self];

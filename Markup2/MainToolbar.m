@@ -80,7 +80,7 @@
     [tmpLabel setBackgroundColor:[UIColor clearColor]];
     [tmpLabel setTextAlignment:NSTextAlignmentCenter];
     [tmpLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
-    [tmpLabel setTextColor:[UIColor darkGrayColor]];
+    [tmpLabel setTextColor:[UIColor whiteColor]];
     titleBar = [[UIBarButtonItem alloc] initWithCustomView:tmpLabel];
     [itemOrder addObject:titleBar]; 
 }
@@ -98,9 +98,11 @@
 
 -(void)createSaveButtons {
     revertButton = [[UIBarButtonItem alloc] initWithTitle:@"Clear Annotations" style:UIBarButtonItemStyleBordered target:delegate action:@selector(revertChanges:)];
+    revertButton.tintColor = [UIColor whiteColor];
     [itemOrder addObject:revertButton];
     [revertButton setEnabled:YES];
     self.doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)];
+    self.doneButton.tintColor = [UIColor whiteColor];
     [itemOrder addObject:self.doneButton];
     [self.doneButton setEnabled:YES];
     //[self.doneButton setTintColor:[UIColor blueColor]];
@@ -230,7 +232,7 @@
 
 - (void)showAnnotationMenu {
     [self hideAnnotationMenu];
-    self.annotationMenu = [[AnnotationMenu alloc] initWithFrame:CGRectMake(0, 44, self.bounds.size.width, 44)];
+    self.annotationMenu = [[AnnotationMenu alloc] initWithFrame:CGRectMake(0, 64, self.bounds.size.width, 44)];
     self.annotationMenu.delegate = self.delegate;
     [self.superview addSubview:self.annotationMenu];
 }

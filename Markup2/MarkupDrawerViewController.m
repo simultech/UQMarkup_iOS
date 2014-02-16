@@ -134,7 +134,7 @@
     [tmpLabel setBackgroundColor:[UIColor clearColor]];
     [tmpLabel setTextAlignment:NSTextAlignmentCenter];
     [tmpLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
-    [tmpLabel setTextColor:[UIColor whiteColor]];
+    [tmpLabel setTextColor:[UIColor darkGrayColor]];
     UIBarButtonItem *titleBar = [[UIBarButtonItem alloc] initWithCustomView:tmpLabel];
     
     

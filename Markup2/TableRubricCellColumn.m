@@ -15,9 +15,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setBackgroundColor:[UIColor whiteColor]];
         self.layer.borderWidth = 1;
         self.layer.borderColor = [[UIColor blackColor] CGColor];
+        [self setBackgroundColor:[UIColor purpleColor]];
         
         self.nameView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 40)];
         [self addSubview:self.nameView];
@@ -27,7 +27,7 @@
         
         
         self.descriptionView = [[UITextView alloc] initWithFrame:CGRectMake(0, 40, self.frame.size.width, self.frame.size.height)];
-        [self.descriptionView setBackgroundColor:[UIColor clearColor]];
+        [self.descriptionView setBackgroundColor:[UIColor whiteColor]];
         [self.descriptionView setEditable:NO];
         [self.descriptionView setFont:[UIFont systemFontOfSize:14.0]];
         [self addSubview:self.descriptionView];

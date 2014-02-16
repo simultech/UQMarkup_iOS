@@ -287,17 +287,19 @@ static BOOL _isRecording;
 }
 
 - (void)finishEditingCell:(AudioCell *)cell {
-    [cell.annotationName setText:cell.annotationEdit.text];
-    [cell.annotationName setHidden:NO];
-    [cell.annotationEdit setHidden:YES];
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    Annotation *ann = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    [ann setTitle:cell.annotationEdit.text];
-    [[NSManagedObjectContext defaultContext] save];
-    [cell.annotationEdit resignFirstResponder];
-    
-    [self.pdfViewController softClearAnnotations];
-    [self.pdfViewController insertAnnotations];
+    if([cell isKindOfClass:[AudioCell class]]) {
+        [cell.annotationName setText:cell.annotationEdit.text];
+        [cell.annotationName setHidden:NO];
+        [cell.annotationEdit setHidden:YES];
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+        Annotation *ann = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        [ann setTitle:cell.annotationEdit.text];
+        [[NSManagedObjectContext defaultContext] save];
+        [cell.annotationEdit resignFirstResponder];
+        
+        [self.pdfViewController softClearAnnotations];
+        [self.pdfViewController insertAnnotations];
+    }
 }
 
 - (void)editClicked:(id)sender {

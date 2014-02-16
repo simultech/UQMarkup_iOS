@@ -264,28 +264,28 @@
     
     NSString *cellType = [data objectForKey:@"type"];
     if([cellType isEqualToString:@"boolean"]) {
-//        cell = [tableView dequeueReusableCellWithIdentifier:BooleanIdentifier];
-//        if (!cell) {
+        cell = [tableView dequeueReusableCellWithIdentifier:BooleanIdentifier];
+        if (!cell) {
             cell = [[BooleanRubricCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BooleanIdentifier];
-//        }
+        }
     } else if([cellType isEqualToString:@"number"]) {
-//        cell = [tableView dequeueReusableCellWithIdentifier:NumberIdentifier];
-//        if (!cell) {
+        cell = [tableView dequeueReusableCellWithIdentifier:NumberIdentifier];
+        if (!cell) {
             cell = [[NumberRubricCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NumberIdentifier];
-//        }
+        }
     } else if([cellType isEqualToString:@"text"]) {
-//        cell = [tableView dequeueReusableCellWithIdentifier:TextIdentifier];
-//        if (!cell) {
+        cell = [tableView dequeueReusableCellWithIdentifier:TextIdentifier];
+        if (!cell) {
             cell = [[TextRubricCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextIdentifier];
-//        }
+        }
     } else {
-//        cell = [tableView dequeueReusableCellWithIdentifier:TableIdentifier];
-//        if (!cell) {
+        cell = [tableView dequeueReusableCellWithIdentifier:TableIdentifier];
+        if (!cell) {
             cell = [[TableRubricCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TableIdentifier];
-//        }
+        }
     }
     
-//    [cell prepareForReuse];
+    [cell prepareForReuse];
     [cell loadData:data];
     
     if([data objectForKey:@"value"] != nil) {

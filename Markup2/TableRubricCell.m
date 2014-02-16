@@ -28,8 +28,13 @@
 }
 
 - (void)loadedData {
+    [self setBackgroundColor:[UIColor yellowColor]];
     self.columnsArray = [[NSMutableArray alloc] init];
+    //self.textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     self.textLabel.text = [self.data objectForKey:@"name"];
+    self.textLabel.frame = CGRectMake(0,0,100,30);
+    [self addSubview:self.textLabel];
+    [self.textLabel setBackgroundColor:[UIColor redColor]];
     NSArray *columnsData = [self.data objectForKey:@"meta"];
     int i = 0;
     int columnWidth = (self.contentView.frame.size.width/[columnsData count]);
@@ -43,12 +48,17 @@
         i++;
     }
     [self.textLabel setHidden:YES];
+    [self fixCellDimensions];
 }
 
 - (void)startValue:(NSString *)value {
     if (value) {
         int selected = [value intValue];
         [[self.columnsArray objectAtIndex:selected] selectColumn:YES];
+    } else {
+        for(TableRubricCellColumn *tmpView in self.columnsArray) {
+            [tmpView selectColumn:NO];
+        }
     }
 }
 
@@ -69,6 +79,7 @@
 
 - (void)fixCellDimensions {
     for(TableRubricCellColumn *column in self.columnsArray) {
+        [column updatedFrame];
         [column fixCellDimensions];
     }
 }
