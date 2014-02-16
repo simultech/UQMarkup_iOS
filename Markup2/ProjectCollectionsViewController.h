@@ -16,6 +16,7 @@
 @property (nonatomic,assign) BOOL showFilter;
 @property (nonatomic,assign) BOOL isRefreshing;
 @property (nonatomic,assign) BOOL showingDeleteConfirm;
+@property (nonatomic,assign) BOOL isTransitioning;
 
 @property (nonatomic,strong) NSString *searchText;
 @property (nonatomic,strong) NSIndexPath *toDeleteIndexPath;

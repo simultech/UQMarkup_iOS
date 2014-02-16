@@ -76,6 +76,7 @@
     self.reloadButton = self.navigationItem.leftBarButtonItem;
     
     _inPublishMode = NO;
+    self.isTransitioning = NO;
     
     [self configureTitleViews];
     
@@ -173,6 +174,8 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
+    self.isTransitioning = NO;
     if([self.collectionView.visibleCells count] == 0) {
         [self refreshProjects:self];
     } else {
@@ -549,7 +552,7 @@
         return;
     }
     [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    if(self.isRefreshing) {
+    if(self.isRefreshing || self.isTransitioning) {
         return;
     }
     
@@ -565,7 +568,9 @@
     if (sub) {
         NSLog(@"OPENING");
         [self performSegueWithIdentifier:@"Open Submission" sender:cell];
+        self.isTransitioning = YES;
     } else {
+        self.isTransitioning = YES;
         cell.downloadProgress.hidden = NO;
         cell.downloadProgress.progress = 0.0;
         [[MarkupAPIController sharedApi] downloadSubmissionFileWithId:subdl.submissionId withSuccess:^(NSString *tempFilePath) {
@@ -578,6 +583,7 @@
             [cell.downloadProgress setHidden:YES];
             UIAlertView *downloadFailed = [[UIAlertView alloc] initWithTitle:@"Couldn't get submission" message:@"We couldn't download the submission document. Please try again later." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [downloadFailed show];
+            self.isTransitioning = NO;
         } andProgress:^(float percentComplete) {
             cell.downloadProgress.progress = percentComplete;
         }];
