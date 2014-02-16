@@ -87,7 +87,15 @@ static int const autoCorrectHeightAddition = 20;
         NSArray *linesOfText = [textView.text componentsSeparatedByString:@"\n"];
         int maxLineWidth = 0;
         for(NSString *lineOfText in linesOfText) {
-            CGSize newFrameSize = [lineOfText sizeWithFont:textView.font forWidth:textView.frame.size.width lineBreakMode:NSLineBreakByWordWrapping];
+            NSMutableParagraphStyle *textStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
+            textStyle.lineBreakMode = NSLineBreakByWordWrapping;
+            NSDictionary *dict = @{ NSFontAttributeName: textView.font, NSParagraphStyleAttributeName: textStyle};
+            CGRect newFrameRect = [lineOfText boundingRectWithSize:CGSizeMake(textView.frame.size.width, MAXFLOAT)
+                                                      options:NSStringDrawingUsesLineFragmentOrigin
+                                                   attributes:dict
+                                                      context:nil];
+            
+            CGSize newFrameSize = newFrameRect.size;
             if(newFrameSize.width > maxLineWidth) {
                 maxLineWidth = newFrameSize.width;
             }

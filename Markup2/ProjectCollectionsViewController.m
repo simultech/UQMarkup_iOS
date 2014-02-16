@@ -553,6 +553,14 @@
         return;
     }
     
+    Project *proj;
+    if(self.showFilter) {
+        proj = [self.filteredProjects objectAtIndex:indexPath.section];
+    } else {
+        proj = [self.projects objectAtIndex:indexPath.section];
+    }
+    SubmissionDownload *subdl = [proj.submissions objectAtIndex:indexPath.item];
+    
     Submission *sub = cell.download.submission;
     if (sub) {
         NSLog(@"OPENING");
@@ -560,9 +568,9 @@
     } else {
         cell.downloadProgress.hidden = NO;
         cell.downloadProgress.progress = 0.0;
-        [[MarkupAPIController sharedApi] downloadSubmissionFileWithId:cell.download.submissionId withSuccess:^(NSString *tempFilePath) {
-            [self saveSubmissionForCellDownload:cell.download withTempFile:tempFilePath];
-            [self saveCoverImageForSubmission:cell.download.submission];
+        [[MarkupAPIController sharedApi] downloadSubmissionFileWithId:subdl.submissionId withSuccess:^(NSString *tempFilePath) {
+            [self saveSubmissionForCellDownload:subdl withTempFile:tempFilePath];
+            [self saveCoverImageForSubmission:subdl.submission];
             [self performSegueWithIdentifier:@"Open Submission" sender:cell];
             NSLog(@"OPENING");
             [cell.downloadProgress setHidden:YES];
@@ -648,7 +656,8 @@
             UIColor *textColour = [UIColor colorWithHexString:ann.colour];
             UIFont *font = [UIFont systemFontOfSize:9.0*pdfScale];
             CGContextSetFillColorWithColor(ctx, textColour.CGColor);
-            [ann.title drawInRect:annotRect withFont:font];
+            NSDictionary *dict = @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColour};
+            [ann.title drawInRect:annotRect withAttributes:dict];
         }
         else if([ann.annotationType isEqualToString:@"Recording"] && [ann.pageNumber isEqual: @1]) {
             CGRect annotRect = CGRectMake(

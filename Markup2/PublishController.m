@@ -189,7 +189,9 @@
         AudioAnnotationView *annotView = [[AudioAnnotationView alloc] initWithFrame:annotRect andAudioAnnotation:audioAnnot];
         [annotView.badge.image drawInRect:annotRect];
         CGContextSetFillColorWithColor(pdfContext, [UIColor blackColor].CGColor);
-        [audioAnnot.title drawInRect:labelRect withFont:[UIFont systemFontOfSize:11.0]];
+        //[audioAnnot.title drawInRect:labelRect withFont:[UIFont systemFontOfSize:11.0]];
+        NSDictionary *dict = @{ NSFontAttributeName: [UIFont systemFontOfSize:11.0]};
+        [audioAnnot.title drawInRect:labelRect withAttributes:dict];
     }
 }
 
@@ -220,7 +222,9 @@
         UIFont *font = [UIFont systemFontOfSize:9.0];
         
         CGContextSetFillColorWithColor(pdfContext, textColour.CGColor);
-        [textAnnot.title drawInRect:annotRect withFont:font];
+        //[textAnnot.title drawInRect:annotRect withFont:font];
+        NSDictionary *dict = @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColour};
+        [textAnnot.title drawInRect:annotRect withAttributes:dict];
     }
 }
 

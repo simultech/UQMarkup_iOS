@@ -43,7 +43,12 @@
 
 - (void)drawRect:(CGRect)rect {
     CGRect textFieldFrame = self.textField.frame;
-    CGSize textLabelSize = [[self.textLabel text] sizeWithFont:[self.textLabel font]];
+    
+    NSDictionary *dict = @{ NSFontAttributeName: [self.textLabel font]};
+    CGSize textLabelSize = [[self.textLabel text] sizeWithAttributes:dict];
+    
+    
+    
     textFieldFrame.size.width = self.contentView.frame.size.width - textLabelSize.width - 50;
     textFieldFrame.origin.x = self.contentView.frame.size.width - textFieldFrame.size.width - 8;
     self.textField.frame = textFieldFrame;
